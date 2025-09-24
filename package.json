@@ -7,9 +7,7 @@
   "type": "commonjs",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "test": "npm run build && node dist/test.js",
-    "lint": "eslint . --ext .ts"
+    "build": "tsc"
   },
   "dependencies": {
     "mongodb": "^6.20.0"
