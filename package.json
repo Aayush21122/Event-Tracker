@@ -1,0 +1,22 @@
+{
+  "name": "event-tracker",
+  "version": "1.0.0",
+  "description": "A Node.js package for storing event logs in a database with built-in data encryption.",
+  "license": "ISC",
+  "author": "Aayush Paghadar",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node dist/test.js",
+    "lint": "eslint . --ext .ts"
+  },
+  "dependencies": {
+    "mongodb": "^6.20.0"
+  },
+  "devDependencies": {
+    "@types/mongodb": "^4.0.7",
+    "@types/node": "^20.14.9",
+    "typescript": "^5.5.3"
+  }
+}
