@@ -47,7 +47,7 @@ The package relies on two crucial environment variables for secure operation. Yo
 ```bash
 # Example .env file content
 MONGO_URI="mongodb://localhost:27017/my-event-logs"
-EVENT_LOGGER_KEY="your-strong-random-key-here-of-32-bytes"
+ENCRYPTION_KEY="your-strong-random-key-here-of-32-bytes"
 ```
 
 <br>
@@ -139,7 +139,7 @@ console.log(encryptedEvents.data);
 
 <br>
 
-The security of your data depends entirely on the `EVENT_LOGGER_KEY`.
+The security of your data depends entirely on the `ENCRYPTION_KEY`.
 
 * **Do not hardcode your key**. Always use a secure environment variable.
 * **Protect the key**. Store it securely and do not commit it to version control (e.g., using `.gitignore`).
