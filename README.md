@@ -1,4 +1,4 @@
-# 📖 Event-Tracker: A Secure Node.js Event Logging Package
+# 📖 TREVA: A Secure Trace Events Activity Package
 <br>
 
 `TREVA` is a robust Node.js package designed for storing and managing event logs in a MongoDB database with built-in authenticated data encryption. This package simplifies the process of logging events while ensuring the confidentiality and integrity of sensitive data.
