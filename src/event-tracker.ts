@@ -6,7 +6,7 @@ interface AddEventParams {
   eventType: string;
   eventName: string;
   data: any;
-  isEncrypted?: boolean;
+  encryption?: boolean;
   isOwn?: boolean;
 }
 
@@ -24,6 +24,7 @@ interface GetEventsParams {
   eventType: string;
   eventName: string;
   filter?: Record<string, any>;
+  isFromMaster?: boolean;
   isEncrypted?: boolean;
   page?: number;
   limit?: number;
@@ -44,8 +45,8 @@ export class EventTracker {
     eventType,
     eventName,
     data,
-    isEncrypted = false,
-    isOwn = true,
+    encryption = false,
+    isOwn = false,
   }: AddEventParams): Promise<{ success: boolean; data?: StoredEvent; error?: string }> {
     try {
       if (!eventType) return { success: false, error: "eventType is required" };
@@ -60,18 +61,18 @@ export class EventTracker {
       const db = Database.getDB();
 
       const collectionName = isOwn
-        ? this.MASTER_COLLECTION
-        : eventType.endsWith("_event_logs")
+        ? eventType.endsWith("_event_logs")
         ? eventType
-        : `${eventType}_event_logs`;
+        : `${eventType}_event_logs`
+        : this.MASTER_COLLECTION;
 
       const collection = db.collection<StoredEvent>(collectionName);
 
       const storedData: StoredEvent = {
         eventType,
         eventName,
-        data: isEncrypted ? CryptoHelper.encrypt(data) : data,
-        isEncrypted,
+        data: encryption ? CryptoHelper.encrypt(data) : data,
+        isEncrypted: encryption,
         isOwn,
         createdAt: new Date(),
       };
@@ -89,6 +90,7 @@ export class EventTracker {
     eventType,
     eventName,
     filter = {},
+    isFromMaster = false,
     isEncrypted,
     page = 1,
     limit = 10,
@@ -98,13 +100,10 @@ export class EventTracker {
       return { success: false, data: [], total: 0, message: "Cannot query master event logs directly" };
     }
 
-    const collectionName = `${eventType}_event_logs`;
+    const collectionName = isFromMaster ? this.MASTER_COLLECTION : `${eventType}_event_logs`;
     const db = Database.getDB();
 
-    const collections = await db.listCollections({ name: collectionName }).toArray();
-    const collection: Collection<StoredEvent> = collections.length
-      ? db.collection(collectionName)
-      : db.collection(this.MASTER_COLLECTION);
+    const collection: Collection<StoredEvent> = db.collection(collectionName);
 
     const baseFilter: Record<string, any> = { eventType, eventName };
     if (isEncrypted !== undefined) baseFilter.isEncrypted = isEncrypted;
