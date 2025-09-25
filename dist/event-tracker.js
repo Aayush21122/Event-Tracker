@@ -5,7 +5,7 @@ const database_1 = require("./database");
 const crypto_1 = require("./crypto");
 class EventTracker {
     /** Add a new event to the appropriate collection */
-    static async addEvent({ eventType, eventName, data, isEncrypted = false, isOwn = true, }) {
+    static async addEvent({ eventType, eventName, data, encryption = false, isOwn = false, }) {
         try {
             if (!eventType)
                 return { success: false, error: "eventType is required" };
@@ -19,16 +19,16 @@ class EventTracker {
             }
             const db = database_1.Database.getDB();
             const collectionName = isOwn
-                ? this.MASTER_COLLECTION
-                : eventType.endsWith("_event_logs")
+                ? eventType.endsWith("_event_logs")
                     ? eventType
-                    : `${eventType}_event_logs`;
+                    : `${eventType}_event_logs`
+                : this.MASTER_COLLECTION;
             const collection = db.collection(collectionName);
             const storedData = {
                 eventType,
                 eventName,
-                data: isEncrypted ? crypto_1.CryptoHelper.encrypt(data) : data,
-                isEncrypted,
+                data: encryption ? crypto_1.CryptoHelper.encrypt(data) : data,
+                isEncrypted: encryption,
                 isOwn,
                 createdAt: new Date(),
             };
@@ -40,17 +40,14 @@ class EventTracker {
             return { success: false, error: err.message || "Unknown error occurred" };
         }
     }
-    static async getEvents({ eventType, eventName, filter = {}, isEncrypted, page = 1, limit = 10, }) {
+    static async getEvents({ eventType, eventName, filter = {}, isFromMaster = false, isEncrypted, page = 1, limit = 10, }) {
         eventType = eventType.toLowerCase();
         if (eventType === "master") {
             return { success: false, data: [], total: 0, message: "Cannot query master event logs directly" };
         }
-        const collectionName = `${eventType}_event_logs`;
+        const collectionName = isFromMaster ? this.MASTER_COLLECTION : `${eventType}_event_logs`;
         const db = database_1.Database.getDB();
-        const collections = await db.listCollections({ name: collectionName }).toArray();
-        const collection = collections.length
-            ? db.collection(collectionName)
-            : db.collection(this.MASTER_COLLECTION);
+        const collection = db.collection(collectionName);
         const baseFilter = { eventType, eventName };
         if (isEncrypted !== undefined)
             baseFilter.isEncrypted = isEncrypted;
