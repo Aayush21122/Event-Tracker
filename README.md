@@ -23,10 +23,10 @@
 
 <br>
 
-To get started, install the `Event-Tracker` package and its dependencies via npm.
+To get started, install the `TREVA` package and its dependencies via npm.
 
 ```bash
-npm install event-tracker
+npm install treva
 ```
 
 <br>
@@ -63,7 +63,7 @@ First, you must establish a connection to your MongoDB instance.
 <br>
 
 ```typescript
-import { Database } from "event-tracker";
+import { Database } from "treva";
 
 async function initialize() {
   try {
@@ -86,7 +86,7 @@ You can add both encrypted and unencrypted events. By default, events are not en
 <br>
 
 ```typescript
-import { EventLogger } from "event-tracker";
+import { EventLogger } from "treva";
 
 // Adding an unencrypted event
 EventLogger.addEvent({
@@ -113,7 +113,7 @@ You can retrieve events and filter them based on their type, name, and encryptio
 <br>
 
 ```typescript
-import { EventLogger } from "event-tracker";
+import { EventLogger } from "treva";
 
 // Retrieve unencrypted user login events
 const unencryptedEvents = await EventLogger.getEvents({
