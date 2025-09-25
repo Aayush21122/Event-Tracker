@@ -1,12 +1,12 @@
 {
   "name": "treva",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Trace events activity with Treva — a minimal MongoDB-powered activity tracker.",
-  "keywords": ["event-tracker", "event-logging", "mongodb", "encryption", "logger"],
+  "keywords": ["treva", "event-tracker", "event-logging", "mongodb", "encryption", "logger", "activity-tracker", "event-logger", "activity-logger", "event-tracker-mongodb", "activity-tracker-mongodb"],
   "license": "MIT",
   "author": "Aayush Paghadar",
   "type": "commonjs",
-  "main": "dist/index.js",
+  "main": "dist/database.js",
   "scripts": {
     "build": "tsc"
   },
