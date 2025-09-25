@@ -1,8 +1,8 @@
 {
-  "name": "event-tracker",
+  "name": "treva",
   "version": "1.0.0",
-  "description": "A Node.js package for storing event logs in a database with built-in data encryption.",
-  "license": "ISC",
+  "description": "Trace events activity with Treva — a minimal MongoDB-powered activity tracker.",
+  "license": "MIT",
   "author": "Aayush Paghadar",
   "type": "commonjs",
   "main": "dist/index.js",
